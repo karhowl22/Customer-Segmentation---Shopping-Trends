@@ -2,13 +2,13 @@
 
 **Course**: BMCS2003 Artificial Intelligence  
 **Assignment**: Machine Learning (Unsupervised)  
-**Author**: [Your Name]
+**Author**: [RIS4]
 
 ## 📖 Project Overview
 
 This project implements an advanced customer segmentation solution using multiple unsupervised machine learning algorithms. The system analyzes customer shopping behavior to identify distinct customer segments for targeted marketing strategies.
 
-### 🌟 **Excellence Features (Going Beyond Requirements)**
+### 🌟 **Excellence Features**
 
 ✅ **6+ Clustering Algorithms**: K-Means, DBSCAN, Gaussian Mixture Models, Hierarchical, Spectral, Mean Shift  
 ✅ **Advanced Feature Engineering**: RFM Analysis, Behavioral Scoring, Customer Lifetime Value  
@@ -47,13 +47,13 @@ pip install -r requirements.txt
 
 1. **Exploratory Data Analysis**:
    ```bash
-   # Open in Jupyter or Google Colab
+   # Open in Google Colab
    customer_segmentation_eda.ipynb
    ```
 
 2. **Advanced Clustering Analysis**:
    ```bash
-   # Open in Jupyter or Google Colab
+   # Open in Google Colab
    customer_segmentation_clustering.ipynb
    ```
 
