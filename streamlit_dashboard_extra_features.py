@@ -157,7 +157,7 @@ def load_and_preprocess_data():
         clustering_features = [
             'Age', 'Recency_Score', 'Total_Purchase_Frequency', 'Monetary_Score',
             'CLV_Proxy', 'Is_Subscribed', 'Uses_Discounts', 'Uses_Promos',
-            'Previous_Purchases', 'Annual_Frequency', 'Gender_Numeric'
+            'Previous Purchases', 'Annual_Frequency', 'Gender_Numeric'
         ]
         
         # Debug: Check clustering features
