@@ -586,7 +586,7 @@ def main():
                 for key in keys_to_remove:
                     if key in st.session_state:
                         del st.session_state[key]
-                st.experimental_rerun()
+                st.rerun()
     
     st.markdown("---")
     
@@ -660,7 +660,7 @@ def show_home_page(df, X, clustering_features):
                 }
                 
                 st.success(f"✅ {algorithm} clustering analysis completed successfully!")
-                st.experimental_rerun()
+                st.rerun()
                 
             except Exception as e:
                 st.error(f"❌ Error during clustering analysis: {str(e)}")
