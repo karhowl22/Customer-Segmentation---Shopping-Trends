@@ -109,12 +109,6 @@ def load_and_preprocess_data():
         if df is None:
             raise FileNotFoundError("Could not load shopping_trends.csv")
         
-        # Debug: Show actual columns in the CSV
-        st.write("🔍 **DEBUG: CSV Columns Found:**")
-        st.write(f"📊 **Total columns:** {len(df.columns)}")
-        st.write(f"📋 **Column names:** {list(df.columns)}")
-        st.write(f"📈 **Dataset shape:** {df.shape}")
-        
         # Clean column names (remove extra spaces)
         df.columns = df.columns.str.strip()
         
@@ -123,15 +117,8 @@ def load_and_preprocess_data():
                           'Purchase Amount (USD)', 'Subscription Status', 'Discount Applied', 
                           'Promo Code Used', 'Gender', 'Age']
         
-        st.write("🔍 **DEBUG: Checking required columns:**")
-        for col in required_columns:
-            exists = col in df.columns
-            st.write(f"  • {col}: {'✅' if exists else '❌'}")
-        
         missing_columns = [col for col in required_columns if col not in df.columns]
         if missing_columns:
-            st.write(f"❌ **Missing columns:** {missing_columns}")
-            st.write(f"📝 **Available columns:** {list(df.columns)}")
             raise KeyError(f"Missing required columns: {missing_columns}")
         
         # Feature engineering
@@ -160,39 +147,18 @@ def load_and_preprocess_data():
             'Previous Purchases', 'Annual_Frequency', 'Gender_Numeric'
         ]
         
-        # Debug: Check clustering features
-        st.write("🔍 **DEBUG: Checking clustering features:**")
-        for feature in clustering_features:
-            exists = feature in df.columns
-            st.write(f"  • {feature}: {'✅' if exists else '❌'}")
-            if not exists:
-                st.write(f"❌ **Feature '{feature}' not found in dataset**")
-                st.write(f"📝 **Available columns:** {list(df.columns)}")
-                raise KeyError(f"Feature '{feature}' not found in dataset")
+        # Verify clustering features exist
+        missing_features = [feature for feature in clustering_features if feature not in df.columns]
+        if missing_features:
+            raise KeyError(f"Clustering features not found: {missing_features}")
         
         X = df[clustering_features].fillna(df[clustering_features].median())
-        
-        st.success(f"✅ **Data loaded successfully!**")
-        st.write(f"📊 **Final dataset:** {len(df):,} rows, {len(clustering_features)} features")
         
         return df, X, clustering_features
         
     except Exception as e:
-        st.error(f"❌ Error loading data: {str(e)}")
-        st.write("🔍 **Troubleshooting Steps:**")
-        st.write("1. Verify 'shopping_trends.csv' is in your GitHub repository root")
-        st.write("2. Check the file was committed and pushed to GitHub")
-        st.write("3. Ensure Streamlit Cloud can access the file")
-        st.write("4. Try redeploying the app")
-        
-        # Debug information
-        try:
-            import os
-            st.write(f"📁 Current directory: {os.getcwd()}")
-            st.write(f"📄 Files found: {os.listdir('.')}")
-        except:
-            pass
-            
+        st.error(f"Error loading data: {str(e)}")
+        st.error("Failed to load data. Please ensure 'shopping_trends.csv' is in the same directory.")
         return None, None, None
 
 @st.cache_data
@@ -769,6 +735,54 @@ def show_clustering_analysis(df):
     st.subheader("📋 Cluster Characteristics Summary")
     cluster_df = create_cluster_characteristics(df, st.session_state.labels)
     st.dataframe(cluster_df, use_container_width=True)
+    
+    # Additional detailed visualizations
+    st.subheader("📈 Detailed Cluster Analysis")
+    
+    # Create detailed analysis plots
+    df_with_clusters = df.copy()
+    df_with_clusters['Cluster'] = st.session_state.labels
+    
+    # Remove noise points for analysis
+    if -1 in st.session_state.labels:
+        df_with_clusters = df_with_clusters[df_with_clusters['Cluster'] != -1]
+    
+    col1, col2 = st.columns(2)
+    
+    with col1:
+        # Purchase amount by cluster
+        fig_purchase = px.box(
+            df_with_clusters, 
+            x='Cluster', 
+            y='Purchase Amount (USD)',
+            title='Purchase Amount Distribution by Cluster',
+            color='Cluster'
+        )
+        st.plotly_chart(fig_purchase, use_container_width=True)
+    
+    with col2:
+        # Age distribution by cluster
+        fig_age = px.histogram(
+            df_with_clusters, 
+            x='Age', 
+            color='Cluster',
+            title='Age Distribution by Cluster',
+            marginal='box'
+        )
+        st.plotly_chart(fig_age, use_container_width=True)
+    
+    # Category preferences
+    st.subheader("🛍️ Category Preferences by Cluster")
+    category_cluster = df_with_clusters.groupby(['Cluster', 'Category']).size().reset_index(name='Count')
+    fig_category = px.bar(
+        category_cluster, 
+        x='Category', 
+        y='Count', 
+        color='Cluster',
+        title='Product Category Preferences by Cluster',
+        barmode='group'
+    )
+    st.plotly_chart(fig_category, use_container_width=True)
 
 def show_customer_prediction_tool(df, clustering_features):
     """Show customer prediction tool with enhanced interface"""
