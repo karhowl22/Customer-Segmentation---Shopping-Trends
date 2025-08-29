@@ -109,13 +109,29 @@ def load_and_preprocess_data():
         if df is None:
             raise FileNotFoundError("Could not load shopping_trends.csv")
         
+        # Debug: Show actual columns in the CSV
+        st.write("🔍 **DEBUG: CSV Columns Found:**")
+        st.write(f"📊 **Total columns:** {len(df.columns)}")
+        st.write(f"📋 **Column names:** {list(df.columns)}")
+        st.write(f"📈 **Dataset shape:** {df.shape}")
+        
+        # Clean column names (remove extra spaces)
+        df.columns = df.columns.str.strip()
+        
         # Verify required columns exist
         required_columns = ['Previous Purchases', 'Review Rating', 'Frequency of Purchases', 
                           'Purchase Amount (USD)', 'Subscription Status', 'Discount Applied', 
                           'Promo Code Used', 'Gender', 'Age']
         
+        st.write("🔍 **DEBUG: Checking required columns:**")
+        for col in required_columns:
+            exists = col in df.columns
+            st.write(f"  • {col}: {'✅' if exists else '❌'}")
+        
         missing_columns = [col for col in required_columns if col not in df.columns]
         if missing_columns:
+            st.write(f"❌ **Missing columns:** {missing_columns}")
+            st.write(f"📝 **Available columns:** {list(df.columns)}")
             raise KeyError(f"Missing required columns: {missing_columns}")
         
         # Feature engineering
@@ -144,12 +160,20 @@ def load_and_preprocess_data():
             'Previous_Purchases', 'Annual_Frequency', 'Gender_Numeric'
         ]
         
-        # Verify all features exist
+        # Debug: Check clustering features
+        st.write("🔍 **DEBUG: Checking clustering features:**")
         for feature in clustering_features:
-            if feature not in df.columns:
+            exists = feature in df.columns
+            st.write(f"  • {feature}: {'✅' if exists else '❌'}")
+            if not exists:
+                st.write(f"❌ **Feature '{feature}' not found in dataset**")
+                st.write(f"📝 **Available columns:** {list(df.columns)}")
                 raise KeyError(f"Feature '{feature}' not found in dataset")
         
         X = df[clustering_features].fillna(df[clustering_features].median())
+        
+        st.success(f"✅ **Data loaded successfully!**")
+        st.write(f"📊 **Final dataset:** {len(df):,} rows, {len(clustering_features)} features")
         
         return df, X, clustering_features
         
