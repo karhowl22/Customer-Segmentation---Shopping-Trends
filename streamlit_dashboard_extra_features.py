@@ -455,7 +455,7 @@ def customer_feature_input():
             'Is_Subscribed': 1 if subscription == 'Yes' else 0,
             'Uses_Discounts': 1 if uses_discounts == 'Yes' else 0,
             'Uses_Promos': 1 if uses_promos == 'Yes' else 0,
-            'Previous_Purchases': previous_purchases,
+            'Previous Purchases': previous_purchases,
             'Annual_Frequency': annual_frequency,
             'Gender_Numeric': 1 if gender == 'Male' else 0
         }
@@ -489,7 +489,7 @@ def display_prediction_results(customer_features, predicted_cluster, advice, df_
         st.markdown("**Customer Profile:**")
         st.write(f"• Age: {customer_features['Age']} years")
         st.write(f"• Purchase Amount: ${customer_features['Monetary_Score']}")
-        st.write(f"• Previous Purchases: {customer_features['Previous_Purchases']}")
+        st.write(f"• Previous Purchases: {customer_features['Previous Purchases']}")
         st.write(f"• Subscription: {'Yes' if customer_features['Is_Subscribed'] else 'No'}")
         st.write(f"• Uses Discounts: {'Yes' if customer_features['Uses_Discounts'] else 'No'}")
     
@@ -537,10 +537,10 @@ def display_prediction_results(customer_features, predicted_cluster, advice, df_
         
         with metrics_cols[2]:
             cluster_avg_previous = cluster_data['Previous Purchases'].mean()
-            delta_previous = customer_features['Previous_Purchases'] - cluster_avg_previous
+            delta_previous = customer_features['Previous Purchases'] - cluster_avg_previous
             st.metric(
                 "Previous Purchases vs Avg", 
-                f"{customer_features['Previous_Purchases']}",
+                f"{customer_features['Previous Purchases']}",
                 f"{delta_previous:+.0f}",
                 delta_color="normal"
             )
@@ -696,7 +696,7 @@ def show_home_page(df, X, clustering_features):
         'Is_Subscribed': 'Subscription status (binary)',
         'Uses_Discounts': 'Discount usage behavior (binary)',
         'Uses_Promos': 'Promo code usage (binary)',
-        'Previous_Purchases': 'Number of previous purchases',
+        'Previous Purchases': 'Number of previous purchases',
         'Annual_Frequency': 'Estimated annual purchase frequency',
         'Gender_Numeric': 'Gender encoded as binary (1=Male, 0=Female)'
     }
