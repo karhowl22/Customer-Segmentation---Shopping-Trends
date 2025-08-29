@@ -255,7 +255,7 @@ def create_cluster_characteristics(df, labels):
     
     return pd.DataFrame(cluster_stats)
 
-def predict_customer_cluster(customer_features, model, scaler, clustering_features):
+def predict_customer_cluster(customer_features, model, scaler, clustering_features, algorithm_name):
     """Predict which cluster a new customer belongs to"""
     
     # Create customer feature vector
@@ -265,10 +265,14 @@ def predict_customer_cluster(customer_features, model, scaler, clustering_featur
     # Scale the features
     customer_X_scaled = scaler.transform(customer_X)
     
-    # Predict cluster
-    cluster = model.predict(customer_X_scaled)[0]
-    
-    return cluster
+    # Check if algorithm supports prediction
+    if hasattr(model, 'predict'):
+        # K-Means and Gaussian Mixture support prediction
+        cluster = model.predict(customer_X_scaled)[0]
+        return cluster
+    else:
+        # DBSCAN doesn't support prediction - return special indicator
+        return None
 
 def generate_segment_advice(cluster, df_with_clusters):
     """Generate personalized advice based on cluster assignment"""
@@ -787,6 +791,11 @@ def show_clustering_analysis(df):
 def show_customer_prediction_tool(df, clustering_features):
     """Show customer prediction tool with enhanced interface"""
     
+    # Check if current algorithm supports prediction
+    if hasattr(st.session_state, 'algorithm') and st.session_state.algorithm == 'DBSCAN':
+        st.warning("⚠️ **DBSCAN Algorithm Detected**")
+        st.info("DBSCAN doesn't support predicting clusters for new customers. Consider using K-Means or Gaussian Mixture for customer prediction.")
+    
     # Customer input
     customer_features = customer_feature_input()
     
@@ -798,20 +807,40 @@ def show_customer_prediction_tool(df, clustering_features):
                     customer_features, 
                     st.session_state.model, 
                     st.session_state.scaler, 
-                    clustering_features
+                    clustering_features,
+                    st.session_state.algorithm
                 )
                 
-                # Prepare data for advice generation
-                df_with_clusters = df.copy()
-                df_with_clusters['Cluster'] = st.session_state.labels
-                
-                # Generate personalized advice
-                advice = generate_segment_advice(predicted_cluster, df_with_clusters)
-                
-                if advice:
-                    display_prediction_results(customer_features, predicted_cluster, advice, df_with_clusters)
+                # Check if prediction is possible
+                if predicted_cluster is None:
+                    # DBSCAN doesn't support prediction
+                    st.warning(f"⚠️ **{st.session_state.algorithm} Limitation**")
+                    st.info("DBSCAN is a density-based clustering algorithm that doesn't support predicting clusters for new customers.")
+                    
+                    st.markdown("### 🔍 **Why DBSCAN Can't Predict:**")
+                    st.write("• DBSCAN finds dense regions in existing data")
+                    st.write("• It doesn't create a predictive model like K-Means or GMM")
+                    st.write("• New data points need to be included in the original clustering")
+                    
+                    st.markdown("### 💡 **Recommendations:**")
+                    st.write("• Use **K-Means** or **Gaussian Mixture** for customer prediction")
+                    st.write("• Or re-run DBSCAN including this customer in the dataset")
+                    
+                    # Suggest switching algorithms
+                    st.markdown("### 🔄 **Switch Algorithm for Prediction:**")
+                    st.info("👈 Go back to the home page and choose **K-Means** or **Gaussian Mixture** to enable customer segment prediction.")
                 else:
-                    st.error("Unable to generate recommendations for this cluster.")
+                    # Prepare data for advice generation
+                    df_with_clusters = df.copy()
+                    df_with_clusters['Cluster'] = st.session_state.labels
+                    
+                    # Generate personalized advice
+                    advice = generate_segment_advice(predicted_cluster, df_with_clusters)
+                    
+                    if advice:
+                        display_prediction_results(customer_features, predicted_cluster, advice, df_with_clusters)
+                    else:
+                        st.error("Unable to generate recommendations for this cluster.")
                     
             except Exception as e:
                 st.error(f"❌ Error during prediction: {str(e)}")
