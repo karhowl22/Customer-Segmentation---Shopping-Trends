@@ -2,7 +2,6 @@
 
 **Course**: BMCS2003 Artificial Intelligence  
 **Assignment**: Machine Learning (Unsupervised)  
-**Author**: [RIS4]
 
 ## 📖 Project Overview
 
@@ -10,7 +9,7 @@ This project implements an advanced customer segmentation solution using multipl
 
 ### 🌟 **Excellence Features**
 
-✅ **6+ Clustering Algorithms**: K-Means, DBSCAN, Gaussian Mixture Models, Hierarchical, Spectral, Mean Shift  
+✅ **3 Clustering Algorithms**: K-Means, DBSCAN, Gaussian Mixture Models, Hierarchical, Spectral, Mean Shift  
 ✅ **Advanced Feature Engineering**: RFM Analysis, Behavioral Scoring, Customer Lifetime Value  
 ✅ **Comprehensive Evaluation**: Multiple metrics with statistical validation  
 ✅ **Interactive Dashboard**: Real-time Streamlit application  
@@ -21,12 +20,11 @@ This project implements an advanced customer segmentation solution using multipl
 
 ```
 customer_segmentation/
-├── customer_segmentation_eda.ipynb          # Part 1: Exploratory Data Analysis
-├── customer_segmentation_clustering.ipynb   # Part 2: Advanced Clustering Implementation
-├── streamlit_dashboard.py                   # Interactive Dashboard Application
+├── customer_segmentation_clustering.ipynb   # Part 1: Exploratory Data AnalysisPart & 2: Advanced Clustering Implementation
+├── streamlit_dashboard_extra_features.py    # Interactive Dashboard Application
 ├── shopping_trends.csv                      # Dataset
 ├── requirements.txt                         # Python Dependencies
-└── README.md                               # Project Documentation
+└── README.md                                # Project Documentation
 ```
 
 ## 🚀 Quick Start Guide
@@ -97,9 +95,6 @@ Access at: `http://localhost:8501`
 1. **K-Means**: Centroid-based clustering with optimal K detection
 2. **DBSCAN**: Density-based clustering for irregular shapes
 3. **Gaussian Mixture Models**: Probabilistic clustering with BIC optimization
-4. **Hierarchical Clustering**: Tree-based clustering with linkage analysis
-5. **Spectral Clustering**: Graph-based clustering for complex structures
-6. **Mean Shift**: Mode-seeking clustering with automatic cluster detection
 
 ### **Evaluation Framework**
 
@@ -138,25 +133,6 @@ Access at: `http://localhost:8501`
 - **Potential Uplift**: 10-25% revenue increase through targeted strategies
 - **Implementation Roadmap**: Actionable next steps with priorities
 
-## 🎯 Assessment Criteria Alignment
-
-### **Basic Requirements (✅ Completed)**
-
-- [x] Clustering problem identification (Customer Segmentation)
-- [x] Background study on unsupervised learning methods
-- [x] Dataset acquisition and preparation (Shopping Trends)
-- [x] Data preprocessing and representation
-- [x] Multiple clustering method implementation
-- [x] Comparative evaluation with appropriate metrics
-
-### **Excellence Differentiators (🌟 Advanced)**
-
-- [x] **Complex AI Algorithms**: 6+ advanced clustering methods
-- [x] **Big Data Processing**: Scalable implementation for large datasets
-- [x] **New Skills/Ideas**: RFM analysis, ensemble clustering, business intelligence
-- [x] **Working Prototype**: Interactive Streamlit dashboard
-- [x] **Excellent Documentation**: Comprehensive analysis and insights
-
 ## 🔧 Technical Requirements
 
 ### **Python Version**
@@ -170,16 +146,16 @@ Access at: `http://localhost:8501`
 - **Notebook**: jupyter, ipykernel
 
 ### **Hardware Recommendations**
-- **RAM**: 8GB+ (for large dataset processing)
+- **RAM**: 4GB+ (for large dataset processing)
 - **CPU**: Multi-core processor (for parallel clustering)
 - **Storage**: 1GB+ available space
 
 ## 📈 Performance Metrics
 
 ### **Clustering Quality**
-- **Silhouette Score**: 0.3-0.7 (Good to Excellent)
+- **Silhouette Score**: 0.2-0.7 (Good to Excellent)
 - **Cluster Separation**: Clear business segment distinction
-- **Scalability**: Handles 10K+ customer records efficiently
+- **Scalability**: Handles 3K+ customer records efficiently
 
 ### **Business Impact**
 - **Segment Coverage**: 95%+ customer base segmented
@@ -210,22 +186,6 @@ Access at: `http://localhost:8501`
 - Scikit-learn Clustering Documentation
 - Plotly Visualization Guidelines
 - Streamlit Dashboard Development
-
-## 🤝 Support & Contact
-
-For questions, improvements, or collaboration:
-
-**Email**: [Your Email]  
-**Course**: BMCS2003 Artificial Intelligence  
-**Institution**: [Your Institution]
-
----
-
-## 📄 License
-
-This project is created for educational purposes as part of the BMCS2003 Artificial Intelligence course assignment.
-
-**Note**: The shopping trends dataset is used for academic analysis only.
 
 ---
 
